@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/models/cart.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -24,10 +26,38 @@ class ProductCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(child: Image.asset(product.imageUrl, height: 100, )),
-          Text(product.name),
-          Text(product.description),
-          Text(product.price.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              child: Image.asset(
+                product.imageUrl,
+                height: 100,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Text(product.name),
+                  Text(product.description, style: TextStyle(fontSize: 12),),
+                  Text(
+                    product.price.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              IconButton(icon: Icon(Icons.add_shopping_cart, color: Colors.blue,), onPressed: () {
+                context.read<CartModel>().addToCart(product);
+              }),
+            ],
+          ),
         ],
       ),
     );

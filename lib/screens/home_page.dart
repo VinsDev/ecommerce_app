@@ -1,7 +1,10 @@
 import 'package:ecommerce_app/data/products_data.dart';
+import 'package:ecommerce_app/models/cart.dart';
 import 'package:ecommerce_app/models/product.dart';
+import 'package:ecommerce_app/screens/cart_page.dart';
 import 'package:ecommerce_app/widgets/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -43,7 +46,44 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home Page'), elevation: 2.0),
+      appBar: AppBar(
+        title: Text('Home Page'),
+        elevation: 2.0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartPage()),
+                );
+              },
+              child: Stack(
+                children: [
+                  Icon(Icons.shopping_cart, size: 30),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.red,
+                      radius: 8,
+                      child: Consumer<CartModel>(
+                        builder: (context, cartModel, child) {
+                          return Text(
+                            cartModel.cartItems.length.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
